@@ -1,6 +1,6 @@
 # Lettera2FHIR
 
-Turns Italian hospital discharge letters into validated HL7 FHIR resources, with a clinician reviewing every extracted item before it is saved.
+Turns hospital discharge letters into validated HL7 FHIR resources, with a clinician reviewing every extracted item before it is saved.
 
 > **Status:** work in progress. Target for v1.0: December 2026.
 > **Not a medical device.** Research and demonstration project, built and tested on synthetic data only.
