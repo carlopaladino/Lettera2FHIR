@@ -1,0 +1,16 @@
+services:
+  hapi:
+    image: hapiproject/hapi:latest   # fissa una versione precisa quando il progetto è stabile
+    ports:
+      - "8080:8080"
+
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["local"]   # non parte in Codespaces; solo sulla macchina con GPU
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+
+volumes:
+  ollama:

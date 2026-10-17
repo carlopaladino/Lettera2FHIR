@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/carlopaladino/lettera2fhir/schemas/extraction.schema.json",
+  "title": "Lettera2FHIR extraction output",
+  "description": "Structured data extracted from one Italian discharge letter. Every item must include an evidence quote copied verbatim from the letter.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["conditions", "medications", "observations"],
+  "properties": {
+    "conditions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/condition" }
+    },
+    "medications": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/medication" }
+    },
+    "observations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/observation" }
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Exact substring of the letter supporting this item, copied character by character (same spelling, punctuation and abbreviations). Shortest span that is still unambiguous."
+    },
+
+    "condition": {
+      "type": "object",
+      "description": "Maps to FHIR Condition.",
+      "additionalProperties": false,
+      "required": ["text", "role", "clinical_status", "verification_status", "evidence"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Diagnosis or problem as written in the letter."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["principale", "secondaria", "anamnestica"],
+          "description": "principale/secondaria: discharge diagnoses (FHIR category encounter-diagnosis). anamnestica: past or chronic conditions from the history (FHIR category problem-list-item)."
+        },
+        "clinical_status": {
+          "type": "string",
+          "enum": ["active", "resolved", "unknown"],
+          "description": "FHIR Condition.clinicalStatus. Use unknown when the letter does not say."
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": ["confirmed", "provisional", "refuted"],
+          "description": "FHIR Condition.verificationStatus. provisional for 'sospetta', 'probabile', 'da verificare'. refuted for explicit exclusions such as 'si esclude'."
+        },
+        "evidence": { "$ref": "#/$defs/evidence" }
+      }
+    },
+
+    "medication": {
+      "type": "object",
+      "description": "Maps to FHIR MedicationStatement. If the same drug appears in different contexts (e.g. home therapy and discharge therapy), create one item per context.",
+      "additionalProperties": false,
+      "required": ["name", "dose", "frequency", "route", "status", "context", "evidence"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Drug name as written: brand name or active ingredient."
+        },
+        "dose": {
+          "type": ["string", "null"],
+          "description": "Dose as written, e.g. '100 mg', '1 cp', '20 UI'. null if absent."
+        },
+        "frequency": {
+          "type": ["string", "null"],
+          "description": "Frequency as written, e.g. '1 cp/die', 'x 2/die', 'al bisogno'. null if absent."
+        },
+        "route": {
+          "type": ["string", "null"],
+          "enum": ["orale", "endovenosa", "sottocutanea", "intramuscolare", "inalatoria", "transdermica", "altro", null],
+          "description": "Route of administration if stated or unambiguous from the formulation (e.g. 'cp' implies orale). null otherwise."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "stopped", "intended", "unknown"],
+          "description": "FHIR R4 MedicationStatement.status. stopped for suspended therapies, intended for therapies to start after discharge."
+        },
+        "context": {
+          "type": "string",
+          "enum": ["domiciliare_pre_ricovero", "durante_ricovero", "alla_dimissione"],
+          "description": "Which part of the care pathway the mention refers to."
+        },
+        "evidence": { "$ref": "#/$defs/evidence" }
+      }
+    },
+
+    "observation": {
+      "type": "object",
+      "description": "Maps to FHIR Observation (laboratory results only, no vital signs or imaging).",
+      "additionalProperties": false,
+      "required": ["name", "value_numeric", "value_text", "unit", "timing", "interpretation", "evidence"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Test name as written, e.g. 'Hb', 'PCR', 'creatinina'."
+        },
+        "value_numeric": {
+          "type": ["number", "null"],
+          "description": "Numeric value with a dot as decimal separator (the letter may use a comma). null for non-numeric results."
+        },
+        "value_text": {
+          "type": ["string", "null"],
+          "description": "Non-numeric result, e.g. 'negativo', 'nella norma'. null when value_numeric is set."
+        },
+        "unit": {
+          "type": ["string", "null"],
+          "description": "Unit as written, e.g. 'g/dl', 'mg/L'. null if absent."
+        },
+        "timing": {
+          "type": "string",
+          "enum": ["ingresso", "durante_ricovero", "dimissione", "non_specificato"],
+          "description": "When the test was taken, if stated."
+        },
+        "interpretation": {
+          "type": ["string", "null"],
+          "enum": ["alto", "basso", "normale", null],
+          "description": "Only if the letter states it explicitly (e.g. 'aumentata', 'nei limiti'). Do not infer from reference ranges. Maps to FHIR interpretation H/L/N."
+        },
+        "evidence": { "$ref": "#/$defs/evidence" }
+      }
+    }
+  }
+}

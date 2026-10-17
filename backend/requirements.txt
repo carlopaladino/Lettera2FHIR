@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+fhir.resources
+openai
+httpx
+jsonschema
+pytest
