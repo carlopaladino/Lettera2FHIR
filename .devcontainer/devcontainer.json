@@ -1,0 +1,15 @@
+{
+  "name": "lettera2fhir",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": { "moby": false },
+    "ghcr.io/devcontainers/features/node:1": { "version": "lts" }
+  },
+  "postCreateCommand": "pip install -r backend/requirements.txt",
+  "forwardPorts": [8000, 8080, 4200],
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "angular.ng-template"]
+    }
+  }
+}
