@@ -1,0 +1,210 @@
+{
+  "conditions": [
+    {
+      "text": "Ipertensione arteriosa",
+      "role": "anamnestica",
+      "clinical_status": "active",
+      "verification_status": "confirmed",
+      "evidence": "Ipertensione arteriosa da circa 15 anni"
+    },
+    {
+      "text": "Dislipidemia",
+      "role": "anamnestica",
+      "clinical_status": "active",
+      "verification_status": "confirmed",
+      "evidence": "Dislipidemia. Ex fumatore"
+    },
+    {
+      "text": "Diabete",
+      "role": "anamnestica",
+      "clinical_status": "unknown",
+      "verification_status": "refuted",
+      "evidence": "Non diabete noto"
+    },
+    {
+      "text": "Fibrillazione atriale parossistica, cardiovertita farmacologicamente",
+      "role": "principale",
+      "clinical_status": "resolved",
+      "verification_status": "confirmed",
+      "evidence": "Fibrillazione atriale parossistica, cardiovertita farmacologicamente"
+    },
+    {
+      "text": "Ipertensione arteriosa",
+      "role": "secondaria",
+      "clinical_status": "active",
+      "verification_status": "confirmed",
+      "evidence": "Ipertensione arteriosa. Dislipidemia. Sindrome"
+    },
+    {
+      "text": "Dislipidemia",
+      "role": "secondaria",
+      "clinical_status": "active",
+      "verification_status": "confirmed",
+      "evidence": "Dislipidemia. Sindrome coronarica acuta esclusa"
+    },
+    {
+      "text": "Sindrome coronarica acuta",
+      "role": "secondaria",
+      "clinical_status": "unknown",
+      "verification_status": "refuted",
+      "evidence": "Sindrome coronarica acuta esclusa"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Triatec (ramipril)",
+      "dose": "5 mg",
+      "frequency": "1 cp/die",
+      "route": "orale",
+      "status": "active",
+      "context": "domiciliare_pre_ricovero",
+      "evidence": "Triatec (ramipril) 5 mg 1 cp/die\n- Lipitor"
+    },
+    {
+      "name": "Lipitor (atorvastatina)",
+      "dose": "20 mg",
+      "frequency": "1 cp/die alla sera",
+      "route": "orale",
+      "status": "active",
+      "context": "domiciliare_pre_ricovero",
+      "evidence": "Lipitor (atorvastatina) 20 mg 1 cp/die alla sera\n\nESAME"
+    },
+    {
+      "name": "Cordarone (amiodarone)",
+      "dose": "300 mg",
+      "frequency": "in 1 h",
+      "route": "endovenosa",
+      "status": "active",
+      "context": "durante_ricovero",
+      "evidence": "Cordarone (amiodarone) 300 mg ev in 1 h"
+    },
+    {
+      "name": "enoxaparina",
+      "dose": "4000 UI",
+      "frequency": null,
+      "route": "sottocutanea",
+      "status": "stopped",
+      "context": "durante_ricovero",
+      "evidence": "enoxaparina 4000 UI sc"
+    },
+    {
+      "name": "Eliquis (apixaban)",
+      "dose": null,
+      "frequency": null,
+      "route": null,
+      "status": "active",
+      "context": "durante_ricovero",
+      "evidence": "sostituita con Eliquis (apixaban)"
+    },
+    {
+      "name": "Eliquis (apixaban)",
+      "dose": "5 mg",
+      "frequency": "1 cp x 2/die",
+      "route": "orale",
+      "status": "active",
+      "context": "alla_dimissione",
+      "evidence": "Eliquis (apixaban) 5 mg 1 cp x 2/die"
+    },
+    {
+      "name": "Triatec (ramipril)",
+      "dose": "5 mg",
+      "frequency": "1 cp/die",
+      "route": "orale",
+      "status": "active",
+      "context": "alla_dimissione",
+      "evidence": "Triatec (ramipril) 5 mg 1 cp/die\n- Lipitor (atorvastatina) 20 mg 1 cp/die alla sera\n\nINDICAZIONI"
+    },
+    {
+      "name": "Lipitor (atorvastatina)",
+      "dose": "20 mg",
+      "frequency": "1 cp/die alla sera",
+      "route": "orale",
+      "status": "active",
+      "context": "alla_dimissione",
+      "evidence": "Lipitor (atorvastatina) 20 mg 1 cp/die alla sera\n\nINDICAZIONI"
+    }
+  ],
+  "observations": [
+    {
+      "name": "troponina hs",
+      "value_numeric": null,
+      "value_text": "nella norma",
+      "unit": null,
+      "timing": "ingresso",
+      "interpretation": "normale",
+      "evidence": "troponina hs nella norma"
+    },
+    {
+      "name": "troponina hs (ripetuta a 3 ore)",
+      "value_numeric": null,
+      "value_text": "negativa",
+      "unit": null,
+      "timing": "durante_ricovero",
+      "interpretation": null,
+      "evidence": "sempre negativa"
+    },
+    {
+      "name": "TSH",
+      "value_numeric": 1.8,
+      "value_text": null,
+      "unit": "mUI/L",
+      "timing": "durante_ricovero",
+      "interpretation": null,
+      "evidence": "TSH 1,8 mUI/L"
+    },
+    {
+      "name": "Funzione tiroidea",
+      "value_numeric": null,
+      "value_text": "nella norma",
+      "unit": null,
+      "timing": "durante_ricovero",
+      "interpretation": "normale",
+      "evidence": "Funzione tiroidea nella norma"
+    },
+    {
+      "name": "Hb",
+      "value_numeric": 14.2,
+      "value_text": null,
+      "unit": "g/dl",
+      "timing": "ingresso",
+      "interpretation": null,
+      "evidence": "Hb 14,2 g/dl"
+    },
+    {
+      "name": "Creatinina",
+      "value_numeric": 0.9,
+      "value_text": null,
+      "unit": "mg/dl",
+      "timing": "ingresso",
+      "interpretation": null,
+      "evidence": "Creatinina 0,9 mg/dl"
+    },
+    {
+      "name": "eGFR",
+      "value_numeric": 88,
+      "value_text": null,
+      "unit": "ml/min",
+      "timing": "ingresso",
+      "interpretation": null,
+      "evidence": "eGFR 88 ml/min"
+    },
+    {
+      "name": "K",
+      "value_numeric": 4.1,
+      "value_text": null,
+      "unit": "mEq/L",
+      "timing": "ingresso",
+      "interpretation": null,
+      "evidence": "K 4,1 mEq/L"
+    },
+    {
+      "name": "PCR",
+      "value_numeric": 2.1,
+      "value_text": null,
+      "unit": "mg/L",
+      "timing": "ingresso",
+      "interpretation": null,
+      "evidence": "PCR 2,1 mg/L"
+    }
+  ]
+}

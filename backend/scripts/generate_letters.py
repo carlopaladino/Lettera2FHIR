@@ -54,8 +54,12 @@ class GenSettings(BaseSettings):
     llm_base_url: str
     llm_api_key: str
     gen_llm_model: str
-    gen_temperature: float = 0.8
-    gen_max_tokens: int = 8000
+    # None = provider default. Models with mandatory reasoning (e.g. Claude 5.5)
+    # may reject any temperature other than the default.
+    gen_temperature: float | None = None
+    gen_max_tokens: int = 20000
+    # Reasoning cannot be disabled on some models: keep it short instead.
+    gen_reasoning_effort: str = "low"
 
 
 @dataclass(frozen=True)
@@ -67,7 +71,23 @@ class LetterSpec:
 
 
 class GenerationError(Exception):
-    """Raised when one attempt produces unusable output; triggers a retry."""
+    """Raised when one attempt produces unusable output; triggers a retry.
+
+    The optional second argument carries the raw model output for debugging.
+    """
+
+    def __init__(self, message: str, raw: str = ""):
+        super().__init__(message)
+        self.raw = raw
+
+
+class FatalAPIError(Exception):
+    """Auth or billing error: retrying cannot help, so the whole run stops."""
+
+
+# 400 = request rejected as malformed (wrong parameter for this model):
+# sending it again unchanged cannot succeed.
+FATAL_STATUS_CODES = {400, 401, 402, 403}
 
 
 # ---------------------------------------------------------------- loading
@@ -117,16 +137,29 @@ def build_prompt(template: str, spec: LetterSpec, schema_text: str) -> str:
 # ------------------------------------------------------------- generation
 
 def call_llm(client: OpenAI, settings: GenSettings, prompt: str):
-    response = client.chat.completions.create(
-        model=settings.gen_llm_model,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=settings.gen_temperature,
-        max_tokens=settings.gen_max_tokens,
-    )
+    kwargs = {
+        "model": settings.gen_llm_model,
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": settings.gen_max_tokens,
+        # OpenRouter's unified reasoning parameter. Hidden reasoning tokens
+        # count against max_tokens, so keep the effort low.
+        "extra_body": {"reasoning": {"effort": settings.gen_reasoning_effort}},
+    }
+    if settings.gen_temperature is not None:
+        kwargs["temperature"] = settings.gen_temperature
+    response = client.chat.completions.create(**kwargs)
     choice = response.choices[0]
+    content = choice.message.content or ""
     if choice.finish_reason == "length":
-        raise GenerationError("output truncated (raise GEN_MAX_TOKENS)")
-    return choice.message.content or "", response.usage
+        usage = response.usage
+        details = getattr(usage, "completion_tokens_details", None)
+        reasoning = getattr(details, "reasoning_tokens", None)
+        raise GenerationError(
+            f"output truncated: {getattr(usage, 'completion_tokens', '?')} completion "
+            f"tokens ({reasoning} reasoning), {len(content)} visible chars",
+            content,
+        )
+    return content, response.usage
 
 
 def parse_output(raw: str) -> tuple[str, dict]:
@@ -134,7 +167,7 @@ def parse_output(raw: str) -> tuple[str, dict]:
     letter_m = re.search(r"<lettera>\s*(.*?)\s*</lettera>", raw, re.DOTALL)
     ann_m = re.search(r"<annotazione>\s*(.*?)\s*</annotazione>", raw, re.DOTALL)
     if not letter_m or not ann_m:
-        raise GenerationError("missing <lettera> or <annotazione> block")
+        raise GenerationError("missing <lettera> or <annotazione> block", raw)
 
     letter = letter_m.group(1).strip()
     # Some models wrap JSON in ```json fences even when told not to.
@@ -142,7 +175,7 @@ def parse_output(raw: str) -> tuple[str, dict]:
     try:
         annotation = json.loads(ann_text)
     except json.JSONDecodeError as exc:
-        raise GenerationError(f"annotation is not valid JSON: {exc}") from exc
+        raise GenerationError(f"annotation is not valid JSON: {exc}", raw) from exc
     return letter, annotation
 
 
@@ -183,6 +216,7 @@ def output_paths(number: str) -> dict[str, Path]:
         "meta": SYNTHETIC_DIR / f"letter_{number}.meta.json",
         "draft": GOLD_DIR / f"letter_{number}.draft.json",
         "gold": GOLD_DIR / f"letter_{number}.json",
+        "failed": SYNTHETIC_DIR / f"letter_{number}.failed.txt",
     }
 
 
@@ -207,8 +241,18 @@ def generate_one(
             raw, usage = call_llm(client, settings, prompt)
             letter, annotation = parse_output(raw)
             check_schema(validator, annotation)
+        except openai.APIStatusError as exc:
+            if exc.status_code in FATAL_STATUS_CODES:
+                raise FatalAPIError(f"{exc.status_code}: {exc.message}") from exc
+            print(f"  attempt {attempt}/{MAX_ATTEMPTS} failed: {exc}")
+            time.sleep(2 * attempt)
+            continue
         except (GenerationError, openai.APIError) as exc:
             print(f"  attempt {attempt}/{MAX_ATTEMPTS} failed: {exc}")
+            raw_failed = getattr(exc, "raw", "")
+            if raw_failed:
+                paths["failed"].write_text(raw_failed, encoding="utf-8")
+                print(f"  raw output saved to {paths['failed'].relative_to(REPO_ROOT)}")
             time.sleep(2 * attempt)
             continue
 
@@ -223,6 +267,7 @@ def generate_one(
             "prompt_version": prompt_version,
             "model": settings.gen_llm_model,
             "temperature": settings.gen_temperature,
+            "reasoning_effort": settings.gen_reasoning_effort,
             "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "attempts": attempt,
             "usage": {
@@ -237,6 +282,7 @@ def generate_one(
         }
 
         paths["letter"].write_text(letter + "\n", encoding="utf-8")
+        paths["failed"].unlink(missing_ok=True)
         write_json(paths["draft"], annotation)
         write_json(paths["meta"], meta)
 
@@ -291,8 +337,12 @@ def main() -> int:
             print("  skip: already generated (use --overwrite)")
             continue
 
-        ok = generate_one(spec, client, settings, template, schema_text,
-                          validator, prompt_version)
+        try:
+            ok = generate_one(spec, client, settings, template, schema_text,
+                              validator, prompt_version)
+        except FatalAPIError as exc:
+            print(f"  fatal, stopping run: {exc}")
+            return 1
         if not ok:
             failed.append(number)
 
