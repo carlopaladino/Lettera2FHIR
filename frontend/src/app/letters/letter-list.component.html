@@ -1,0 +1,34 @@
+<main class="page-shell">
+  <header class="page-header">
+    <div class="brand-mark" aria-hidden="true">L2F</div>
+    <div>
+      <p class="eyebrow">Lettera2FHIR</p>
+      <h1>Lettere da revisionare</h1>
+      <p class="subtitle">Seleziona una lettera sintetica per iniziare la revisione clinica.</p>
+    </div>
+  </header>
+
+  @if (error()) {
+    <p class="alert" role="alert">{{ error() }}</p>
+  } @else if (loading()) {
+    <p class="loading" role="status">Caricamento lettere…</p>
+  } @else if (letters().length === 0) {
+    <p class="empty-state">Non ci sono lettere disponibili.</p>
+  } @else {
+    <ul class="letter-list">
+      @for (letter of letters(); track letter.id) {
+        <li>
+          <a [routerLink]="['/letters', letter.id]" class="letter-link">
+            <span class="letter-icon" aria-hidden="true">↗</span>
+            <span>
+              <strong>{{ letter.title }}</strong>
+              <span class="letter-id">ID: {{ letter.id }}</span>
+            </span>
+            <span class="open-label">Apri revisione</span>
+          </a>
+        </li>
+      }
+    </ul>
+  }
+  <p class="synthetic-note">Demo con dati esclusivamente sintetici.</p>
+</main>

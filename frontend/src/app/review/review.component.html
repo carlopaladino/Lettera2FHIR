@@ -1,0 +1,201 @@
+<div class="review-page">
+  <header class="topbar">
+    <a class="back-link" routerLink="/" aria-label="Torna all'elenco delle lettere">← Lettere</a>
+    <div class="heading">
+      <p class="eyebrow">Revisione clinica</p>
+      <h1>{{ letterTitle() || 'Caricamento lettera…' }}</h1>
+    </div>
+    <label class="reviewer-field">
+      <span>Revisore</span>
+      <input [value]="reviewer()" (input)="updateReviewer($event)" aria-label="Nome del revisore" />
+    </label>
+    <div class="progress-block" aria-live="polite">
+      <strong>{{ reviewed() }} di {{ items().length }} elementi revisionati</strong>
+      <div class="progress-track" role="progressbar" [attr.aria-valuenow]="reviewed()" [attr.aria-valuemin]="0" [attr.aria-valuemax]="items().length">
+        <span [style.width.%]="items().length ? reviewed() / items().length * 100 : 0"></span>
+      </div>
+    </div>
+    <button class="primary-button commit-button" type="button" [disabled]="!mayCommit() || busy()" (click)="commit()">
+      {{ busy() ? 'Salvataggio…' : 'Salva su FHIR' }}
+    </button>
+  </header>
+
+  @if (error()) {
+    <p class="alert" role="alert">{{ error() }}</p>
+  }
+  @if (commitResult(); as result) {
+    <p class="success-banner" role="status">
+      Bundle {{ result.bundle_id }} salvato: {{ result.saved_items }} elementi inviati a FHIR.
+    </p>
+  }
+  @if (loading()) {
+    <p class="loading" role="status">Preparazione della revisione…</p>
+  } @else if (extraction()) {
+    <main class="review-layout">
+      <section class="letter-panel" aria-labelledby="letter-heading">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Documento originale</p>
+            <h2 id="letter-heading">Lettera di dimissione</h2>
+          </div>
+          <span class="item-count">{{ letterText().length }} caratteri</span>
+        </div>
+        <div class="letter-scroll">
+          <p class="letter-copy">
+            @for (segment of segments(); track $index; let i = $index) {
+              @if (segment.itemIds.length) {
+                <span
+                  [id]="'evidence-' + i"
+                  class="evidence-mark"
+                  [class.highlight-pending]="segmentStatus(segment) === 'pending'"
+                  [class.highlight-approved]="segmentStatus(segment) === 'approved'"
+                  [class.highlight-edited]="segmentStatus(segment) === 'edited'"
+                  [class.highlight-rejected]="segmentStatus(segment) === 'rejected'"
+                  [class.is-selected]="segment.itemIds.includes(selectedId())"
+                  [style.background-image]="segmentBackground(segment)"
+                  [attr.role]="'button'"
+                  [attr.tabindex]="0"
+                  [attr.aria-label]="'Evidenza clinica, ' + segment.itemIds.length + ' elementi associati'"
+                  (click)="selectSegment(segment)"
+                  (keydown.enter)="selectSegment(segment)"
+                  (keydown.space)="$event.preventDefault(); selectSegment(segment)"
+                >{{ segment.text }}</span>
+              } @else {
+                <span>{{ segment.text }}</span>
+              }
+            }
+          </p>
+        </div>
+        <p class="synthetic-note">Documento di esempio con contenuto esclusivamente sintetico.</p>
+      </section>
+
+      <section class="items-panel" aria-labelledby="items-heading">
+        <div class="panel-heading items-heading">
+          <div>
+            <p class="eyebrow">Estrazione {{ extraction()?.model }}</p>
+            <h2 id="items-heading">Elementi estratti</h2>
+          </div>
+          <span class="item-count">{{ items().length }} totali</span>
+        </div>
+
+        @for (group of groups(); track group.type) {
+          @if (group.items.length) {
+            <section class="item-group" [attr.aria-label]="group.title">
+              <h3>{{ group.title }} <span>{{ group.items.length }}</span></h3>
+              <div class="item-list">
+                @for (item of group.items; track item.item_id) {
+                  <button
+                    class="item-card"
+                    type="button"
+                    [class.selected]="item.item_id === selectedId()"
+                    [class.status-card-pending]="item.review_status === 'pending'"
+                    [class.status-card-approved]="item.review_status === 'approved'"
+                    [class.status-card-edited]="item.review_status === 'edited'"
+                    [class.status-card-rejected]="item.review_status === 'rejected'"
+                    [attr.aria-pressed]="item.item_id === selectedId()"
+                    (click)="chooseItem(item)"
+                  >
+                    <span class="status-dot" aria-hidden="true"></span>
+                    <span class="item-card-content">
+                      <strong>{{ displayDetails(item) }}</strong>
+                      <span class="item-status">{{ statusLabel(item.review_status) }}</span>
+                      @if (item.evidence_span === null) {
+                        <span class="evidence-warning">⚠ Frase non trovata nel testo</span>
+                      } @else {
+                        <span class="evidence-quote">«{{ item.evidence }}»</span>
+                      }
+                    </span>
+                  </button>
+                }
+              </div>
+            </section>
+          }
+        }
+      </section>
+    </main>
+
+    <footer class="action-bar">
+      <div class="shortcut-legend" aria-label="Scorciatoie da tastiera">
+        <strong>Scorciatoie</strong>
+        <span><kbd>A</kbd> Approva</span>
+        <span><kbd>M</kbd> Modifica</span>
+        <span><kbd>S</kbd> Scarta</span>
+        <span><kbd>J</kbd>/<kbd>K</kbd> Elemento successivo/precedente</span>
+      </div>
+      <div class="item-actions">
+        @if (selectedItem(); as item) {
+          <span class="selected-label">Selezionato: {{ displayDetails(item) }}</span>
+          <button type="button" class="secondary-button" [disabled]="committed() || busy()" (click)="openReject()">Scarta</button>
+          <button type="button" class="secondary-button" [disabled]="committed() || busy()" (click)="openEdit()">Modifica</button>
+          <button type="button" class="primary-button" [disabled]="committed() || busy()" (click)="approveSelected()">Approva</button>
+        }
+      </div>
+    </footer>
+  }
+</div>
+
+@if (editOpen() && selectedItem(); as item) {
+  <div class="modal-backdrop">
+    <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="edit-heading">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">Revisione manuale</p>
+          <h2 id="edit-heading">Modifica elemento</h2>
+        </div>
+        <button type="button" class="close-button" aria-label="Chiudi" (click)="editOpen.set(false)">×</button>
+      </div>
+      <form (submit)="$event.preventDefault(); saveEdit()">
+        @for (field of editFields(); track field.name) {
+          <label class="form-field">
+            <span>{{ field.label }}</span>
+            @if (field.kind === 'select') {
+              <select [value]="fieldValue(field.name)" (change)="setEditField(field, $event)">
+                @if (field.options?.includes(null)) {
+                  <option value="">Non specificato</option>
+                }
+                @for (option of field.options; track $index) {
+                  @if (option !== null) {
+                    <option [value]="option">{{ enumLabel(option) }}</option>
+                  }
+                }
+              </select>
+            } @else {
+              <input
+                [type]="field.kind"
+                [step]="field.kind === 'number' ? 'any' : null"
+                [value]="fieldValue(field.name)"
+                (input)="setEditField(field, $event)"
+              />
+            }
+          </label>
+        }
+        <div class="dialog-actions">
+          <button type="button" class="secondary-button" (click)="editOpen.set(false)">Annulla</button>
+          <button type="submit" class="primary-button" [disabled]="busy()">Salva modifica</button>
+        </div>
+      </form>
+    </section>
+  </div>
+}
+
+@if (rejectOpen()) {
+  <div class="modal-backdrop">
+    <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="reject-heading">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">Revisione manuale</p>
+          <h2 id="reject-heading">Scarta elemento</h2>
+        </div>
+        <button type="button" class="close-button" aria-label="Chiudi" (click)="rejectOpen.set(false)">×</button>
+      </div>
+      <label class="form-field">
+        <span>Motivo (facoltativo)</span>
+        <textarea rows="4" [value]="rejectReason()" (input)="updateRejectReason($event)"></textarea>
+      </label>
+      <div class="dialog-actions">
+        <button type="button" class="secondary-button" (click)="rejectOpen.set(false)">Annulla</button>
+        <button type="button" class="danger-button" [disabled]="busy()" (click)="confirmReject()">Conferma scarto</button>
+      </div>
+    </section>
+  </div>
+}
