@@ -118,6 +118,10 @@ Carlo Paladino, data engineer working with clinical data. Member of [SIIAM](http
 
 [LinkedIn](https://linkedin.com/in/carlo-paladino/)
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and development setup. All contributions should follow the project’s data and evaluation-set rules.
+
 ## License
 
-Apache-2.0
+This project is licensed under the [Apache License 2.0](LICENSE).
