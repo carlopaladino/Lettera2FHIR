@@ -1,0 +1,54 @@
+PRESIDIO OSPEDALIERO DI VALFIORITA
+U.O. di Nefrologia e Dialisi
+Direttore: Dott. R. Montanaro
+
+LETTERA DI DIMISSIONE
+
+Paziente: Bruni Gelsomino, nato il 14/03/1951
+Data ricovero: 09/02/2026
+Data dimissione: 13/02/2026
+
+MOTIVO DEL RICOVERO
+Rialzo della creatinina agli esami ambulatoriali, astenia e riduzione della diuresi da circa una settimana.
+
+ANAMNESI PATOLOGICA REMOTA
+Ipertensione arteriosa da circa 15 anni. Diabete mellito tipo 2 in terapia orale. Ipertrofia prostatica benigna.
+
+ANAMNESI PATOLOGICA PROSSIMA
+Da 7 giorni astenia e minzioni ridotte. Episodio di gastroenterite la settimana precedente, con scarso introito di liquidi. Assume FANS al bisogno per lombalgia. Non febbre, non disuria.
+
+TERAPIA DOMICILIARE
+- Ramipril 5 mg 1 cp/die
+- Metformina 850 mg 1 cp x 2/die
+- Amlodipina 5 mg 1 cp/die
+- Tamsulosina 0,4 mg 1 cp/die
+- Ibuprofene 400 mg al bisogno
+
+ESAME OBIETTIVO ALL'INGRESSO
+Condizioni generali discrete. PA 105/65 mmHg, FC 88 bpm. Mucose secche, torace nella norma. Addome trattabile, non dolente. Non edemi declivi. Non globo vescicale.
+
+DECORSO CLINICO
+Ricoverato per sospetto danno renale acuto prerenale. Sospesi ramipril, metformina e ibuprofene. Idratazione con soluzione fisiologica 1500 ml/die ev per 48 ore, poi ripresa dell'alimentazione orale. Diuresi in progressivo aumento. Ecografia renale senza segni di ostruzione: si esclude uropatia ostruttiva. Sedimento urinario negativo per ematuria e proteinuria. Creatinina in miglioramento già dopo 48 ore (2,1 mg/dl). Buon compenso pressorio con sola amlodipina. Apiretico per tutta la degenza.
+
+ESAMI EMATOCHIMICI
+Ingresso (09/02): creatinina 2,8 mg/dl, eGFR 22 ml/min, K 5,3 mEq/L, Hb 12,4 g/dl.
+Dimissione (13/02): creatinina 1,5 mg/dl, eGFR 46 ml/min, K 4,4 mEq/L, Hb 12,1 g/dl.
+PCR 3 mg/L.
+
+ESAMI STRUMENTALI
+Ecografia reni e vie urinarie: reni di dimensioni nella norma, nessuna idronefrosi.
+
+DIAGNOSI DI DIMISSIONE
+Danno renale acuto prerenale da disidratazione e FANS, in risoluzione.
+Ipertensione arteriosa. Diabete mellito tipo 2. Ipertrofia prostatica benigna.
+Esclusa uropatia ostruttiva.
+
+TERAPIA ALLA DIMISSIONE
+- Amlodipina 5 mg 1 cp/die
+- Tamsulosina 0,4 mg 1 cp/die
+- Metformina sospesa fino a controllo della funzione renale
+- Ramipril sospeso fino a controllo
+- Evitare FANS
+
+INDICAZIONI E FOLLOW-UP
+Idratazione adeguata, almeno 1,5 L/die. Controllo di creatinina, eGFR e K tra 7 giorni dal MMG. Visita nefrologica ambulatoriale tra 3 settimane. Monitorare la PA a domicilio.

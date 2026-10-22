@@ -1,0 +1,24 @@
+{
+  "letter": "16",
+  "specialty": "Nefrologia",
+  "complexity": "bassa",
+  "features": [
+    "lab_ripetuti",
+    "negazione"
+  ],
+  "prompt_version": "gen-v1",
+  "model": "anthropic/claude-sonnet-5.5",
+  "temperature": null,
+  "reasoning_effort": "low",
+  "generated_at": "2026-10-22T13:45:15+00:00",
+  "attempts": 1,
+  "usage": {
+    "prompt_tokens": 3370,
+    "completion_tokens": 3995
+  },
+  "word_count": 361,
+  "warnings": {
+    "length": null,
+    "evidence_not_found": []
+  }
+}
