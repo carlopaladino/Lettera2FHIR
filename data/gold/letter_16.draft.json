@@ -1,0 +1,282 @@
+{
+  "conditions": [
+    {
+      "text": "Ipertensione arteriosa",
+      "role": "anamnestica",
+      "clinical_status": "active",
+      "verification_status": "confirmed",
+      "evidence": "Ipertensione arteriosa da circa 15 anni"
+    },
+    {
+      "text": "Diabete mellito tipo 2",
+      "role": "anamnestica",
+      "clinical_status": "active",
+      "verification_status": "confirmed",
+      "evidence": "Diabete mellito tipo 2 in terapia orale"
+    },
+    {
+      "text": "Ipertrofia prostatica benigna",
+      "role": "anamnestica",
+      "clinical_status": "active",
+      "verification_status": "confirmed",
+      "evidence": "Ipertrofia prostatica benigna."
+    },
+    {
+      "text": "Danno renale acuto prerenale da disidratazione e FANS",
+      "role": "principale",
+      "clinical_status": "active",
+      "verification_status": "confirmed",
+      "evidence": "Danno renale acuto prerenale da disidratazione e FANS, in risoluzione"
+    },
+    {
+      "text": "Uropatia ostruttiva",
+      "role": "secondaria",
+      "clinical_status": "unknown",
+      "verification_status": "refuted",
+      "evidence": "si esclude uropatia ostruttiva"
+    },
+    {
+      "text": "Ipertensione arteriosa",
+      "role": "secondaria",
+      "clinical_status": "active",
+      "verification_status": "confirmed",
+      "evidence": "Ipertensione arteriosa. Diabete"
+    },
+    {
+      "text": "Diabete mellito tipo 2",
+      "role": "secondaria",
+      "clinical_status": "active",
+      "verification_status": "confirmed",
+      "evidence": "Diabete mellito tipo 2. Ipertrofia"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Ramipril",
+      "dose": "5 mg",
+      "frequency": "1 cp/die",
+      "route": "orale",
+      "status": "active",
+      "context": "domiciliare_pre_ricovero",
+      "evidence": "Ramipril 5 mg 1 cp/die"
+    },
+    {
+      "name": "Metformina",
+      "dose": "850 mg",
+      "frequency": "1 cp x 2/die",
+      "route": "orale",
+      "status": "active",
+      "context": "domiciliare_pre_ricovero",
+      "evidence": "Metformina 850 mg 1 cp x 2/die"
+    },
+    {
+      "name": "Amlodipina",
+      "dose": "5 mg",
+      "frequency": "1 cp/die",
+      "route": "orale",
+      "status": "active",
+      "context": "domiciliare_pre_ricovero",
+      "evidence": "Amlodipina 5 mg 1 cp/die\n- Tamsulosina 0,4 mg 1 cp/die\n- Ibuprofene"
+    },
+    {
+      "name": "Tamsulosina",
+      "dose": "0,4 mg",
+      "frequency": "1 cp/die",
+      "route": "orale",
+      "status": "active",
+      "context": "domiciliare_pre_ricovero",
+      "evidence": "Tamsulosina 0,4 mg 1 cp/die\n- Ibuprofene"
+    },
+    {
+      "name": "Ibuprofene",
+      "dose": "400 mg",
+      "frequency": "al bisogno",
+      "route": "orale",
+      "status": "active",
+      "context": "domiciliare_pre_ricovero",
+      "evidence": "Ibuprofene 400 mg al bisogno"
+    },
+    {
+      "name": "ramipril",
+      "dose": null,
+      "frequency": null,
+      "route": null,
+      "status": "stopped",
+      "context": "durante_ricovero",
+      "evidence": "Sospesi ramipril, metformina e ibuprofene"
+    },
+    {
+      "name": "metformina",
+      "dose": null,
+      "frequency": null,
+      "route": null,
+      "status": "stopped",
+      "context": "durante_ricovero",
+      "evidence": "Sospesi ramipril, metformina e ibuprofene"
+    },
+    {
+      "name": "ibuprofene",
+      "dose": null,
+      "frequency": null,
+      "route": null,
+      "status": "stopped",
+      "context": "durante_ricovero",
+      "evidence": "Sospesi ramipril, metformina e ibuprofene"
+    },
+    {
+      "name": "soluzione fisiologica",
+      "dose": "1500 ml/die",
+      "frequency": "per 48 ore",
+      "route": "endovenosa",
+      "status": "stopped",
+      "context": "durante_ricovero",
+      "evidence": "soluzione fisiologica 1500 ml/die ev per 48 ore"
+    },
+    {
+      "name": "Amlodipina",
+      "dose": "5 mg",
+      "frequency": "1 cp/die",
+      "route": "orale",
+      "status": "active",
+      "context": "alla_dimissione",
+      "evidence": "- Amlodipina 5 mg 1 cp/die\n- Tamsulosina 0,4 mg 1 cp/die\n- Metformina sospesa"
+    },
+    {
+      "name": "Tamsulosina",
+      "dose": "0,4 mg",
+      "frequency": "1 cp/die",
+      "route": "orale",
+      "status": "active",
+      "context": "alla_dimissione",
+      "evidence": "- Tamsulosina 0,4 mg 1 cp/die\n- Metformina sospesa"
+    },
+    {
+      "name": "Metformina",
+      "dose": null,
+      "frequency": null,
+      "route": null,
+      "status": "stopped",
+      "context": "alla_dimissione",
+      "evidence": "Metformina sospesa fino a controllo della funzione renale"
+    },
+    {
+      "name": "Ramipril",
+      "dose": null,
+      "frequency": null,
+      "route": null,
+      "status": "stopped",
+      "context": "alla_dimissione",
+      "evidence": "Ramipril sospeso fino a controllo"
+    }
+  ],
+  "observations": [
+    {
+      "name": "creatinina",
+      "value_numeric": 2.1,
+      "value_text": null,
+      "unit": "mg/dl",
+      "timing": "durante_ricovero",
+      "interpretation": null,
+      "evidence": "2,1 mg/dl"
+    },
+    {
+      "name": "creatinina",
+      "value_numeric": 2.8,
+      "value_text": null,
+      "unit": "mg/dl",
+      "timing": "ingresso",
+      "interpretation": null,
+      "evidence": "creatinina 2,8 mg/dl"
+    },
+    {
+      "name": "eGFR",
+      "value_numeric": 22,
+      "value_text": null,
+      "unit": "ml/min",
+      "timing": "ingresso",
+      "interpretation": null,
+      "evidence": "eGFR 22 ml/min"
+    },
+    {
+      "name": "K",
+      "value_numeric": 5.3,
+      "value_text": null,
+      "unit": "mEq/L",
+      "timing": "ingresso",
+      "interpretation": null,
+      "evidence": "K 5,3 mEq/L"
+    },
+    {
+      "name": "Hb",
+      "value_numeric": 12.4,
+      "value_text": null,
+      "unit": "g/dl",
+      "timing": "ingresso",
+      "interpretation": null,
+      "evidence": "Hb 12,4 g/dl"
+    },
+    {
+      "name": "creatinina",
+      "value_numeric": 1.5,
+      "value_text": null,
+      "unit": "mg/dl",
+      "timing": "dimissione",
+      "interpretation": null,
+      "evidence": "creatinina 1,5 mg/dl"
+    },
+    {
+      "name": "eGFR",
+      "value_numeric": 46,
+      "value_text": null,
+      "unit": "ml/min",
+      "timing": "dimissione",
+      "interpretation": null,
+      "evidence": "eGFR 46 ml/min"
+    },
+    {
+      "name": "K",
+      "value_numeric": 4.4,
+      "value_text": null,
+      "unit": "mEq/L",
+      "timing": "dimissione",
+      "interpretation": null,
+      "evidence": "K 4,4 mEq/L"
+    },
+    {
+      "name": "Hb",
+      "value_numeric": 12.1,
+      "value_text": null,
+      "unit": "g/dl",
+      "timing": "dimissione",
+      "interpretation": null,
+      "evidence": "Hb 12,1 g/dl"
+    },
+    {
+      "name": "PCR",
+      "value_numeric": 3,
+      "value_text": null,
+      "unit": "mg/L",
+      "timing": "non_specificato",
+      "interpretation": null,
+      "evidence": "PCR 3 mg/L"
+    },
+    {
+      "name": "ematuria",
+      "value_numeric": null,
+      "value_text": "negativo",
+      "unit": null,
+      "timing": "durante_ricovero",
+      "interpretation": null,
+      "evidence": "Sedimento urinario negativo per ematuria"
+    },
+    {
+      "name": "proteinuria",
+      "value_numeric": null,
+      "value_text": "negativo",
+      "unit": null,
+      "timing": "durante_ricovero",
+      "interpretation": null,
+      "evidence": "negativo per ematuria e proteinuria"
+    }
+  ]
+}
